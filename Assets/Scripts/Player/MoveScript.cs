@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -14,31 +13,22 @@ public class MoveScript : MonoBehaviour
     private bool isJumping = false;
     private bool isFacingRight = true;
     private bool isGrounded = false;
-    private bool isAlive = true;
-
     private float groundedRadius = 0.2f;
 
     private Rigidbody2D ps;
-    private Animator anim;
-    private List<Touch> touches;
+    private PlayerScript player;
 
-
-    public void Start()
+    private void Start()
     {
         this.ps = this.GetComponent<Rigidbody2D>();
-        this.anim = this.GetComponent<Animator>();
-        this.touches = new List<Touch>();
+        this.player = (PlayerScript)this.GetComponent(typeof(PlayerScript));
     }
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
         this.isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this.groundedRadius, this.whatIsGround);
 
-        //this.transform.Translate(new Vector3(move, this.ps.velocity.y, 0) * Time.deltaTime);
-
-        Debug.Log(CrossPlatformInputManager.GetAxis("Horizontal"));
         var move = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal"), 0f).x * this.moveSpeed;
-
 
         this.transform.Translate(new Vector3(move, 0, 0));
 
@@ -51,23 +41,22 @@ public class MoveScript : MonoBehaviour
             this.Flip();
         }
 
-        if (this.IsAlive && this.isJumping)
+        if (this.player.IsAlive && this.isJumping)
         {
             this.isJumping = false;
             this.ps.AddForce(Vector2.up * jumpForce);
         }
     }
 
-    public void Update()
+    private void Update()
     {
-		if (this.isGrounded && ( CrossPlatformInputManager.GetButtonDown("Jump") || Input.GetButtonDown("Jump") ) && this.isAlive)
+        if (this.isGrounded && (CrossPlatformInputManager.GetButtonDown("Jump") || Input.GetButtonDown("Jump")) && this.player.IsAlive)
         {
             this.isGrounded = false;
             this.isJumping = true;
-            //this.anim.Play("Jump");
         }
 
-        if (!this.IsAlive)
+        if (!this.player.IsAlive)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -79,17 +68,5 @@ public class MoveScript : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         this.transform.localScale = theScale;
-    }
-
-    public bool IsAlive
-    {
-        get
-        {
-            return this.isAlive;
-        }
-        set
-        {
-            this.isAlive = value;
-        }
     }
 }

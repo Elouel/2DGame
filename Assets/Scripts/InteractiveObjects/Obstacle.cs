@@ -4,15 +4,18 @@ public class Obstacle : MonoBehaviour
 {
     public GameObject player;
 
-    private MoveScript script;
+    private PlayerScript script;
 
-    void Start()
+    public void Start()
     {
-        this.script = (MoveScript)player.GetComponent(typeof(MoveScript));
+        this.script = (PlayerScript)player.GetComponent(typeof(PlayerScript));
     }
 
     public void OnCollisionEnter2D(Collision2D other)
     {
-        this.script.IsAlive = false;
+        if(other.gameObject.name == "Player")
+        {
+            this.script.IsAlive = false;
+        }
     }
 }

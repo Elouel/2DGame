@@ -9,7 +9,7 @@ public class SizeControler : MonoBehaviour
     private float timeLeft;
     private bool isEffected;
 
-    public void Update()
+    private void Update()
     {
         if (this.isEffected)
         {
@@ -24,7 +24,7 @@ public class SizeControler : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (!isEffected)
         {

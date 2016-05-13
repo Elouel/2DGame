@@ -20,19 +20,53 @@ public class MoveScript : MonoBehaviour
     private Rigidbody2D ps;
     private Animator anim;
 
-
     public void Start()
     {
         this.ps = this.GetComponent<Rigidbody2D>();
         this.anim = this.GetComponent<Animator>();
     }
 
-    public void FixedUpdate()
-    {
-        //this.transform.Translate(new Vector3(move, this.ps.velocity.y, 0) * Time.deltaTime);
+    //public void FixedUpdate()
+    //{
+        
 
-        var move = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal"), 0f).x * this.moveSpeed;
+
+    //    if (this.IsAlive && this.isJumping)
+    //    {
+    //        this.isJumping = false;
+    //        Vector2 force = Vector2.up * this.jumpForce;
+    //        var moveY = this.ps.velocity.y;
+    //        moveY += force.y;
+    //        this.ps.velocity = new Vector2(0, moveY);
+    //    }
+    //}
+
+    public void Update()
+    {
+        if (!this.IsAlive)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        this.isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this.groundedRadius, this.whatIsGround);
+
+        if (this.isGrounded && (CrossPlatformInputManager.GetButtonDown("Jump") || Input.GetButtonDown("Jump")) && this.isAlive)
+        {
+            this.anim.SetTrigger("isJumping");
+            this.isJumping = true;
+        }
+        
+        var move = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal"), 0f).x * this.moveSpeed * Time.deltaTime;
         this.transform.Translate(new Vector3(move, 0, 0));
+
+        if (this.IsAlive && this.isJumping)
+        {
+            this.isJumping = false;
+            Vector2 force = Vector2.up * this.jumpForce;
+            var moveY = this.ps.velocity.y;
+            moveY += force.y;
+            this.ps.velocity = new Vector2(0, moveY);
+        }
 
         if (move > 0 && !this.isFacingRight)
         {
@@ -41,34 +75,6 @@ public class MoveScript : MonoBehaviour
         else if (move < 0 && this.isFacingRight)
         {
             this.Flip();
-        }
-
-        if (this.IsAlive && this.isJumping)
-        {
-            this.isJumping = false;
-            this.ps.AddForce(Vector2.up * jumpForce);
-        }
-
-    }
-
-    public void Update()
-    {
-        this.isGrounded = Physics2D.OverlapCircle(this.groundCheck.position, this.groundedRadius, this.whatIsGround);
-
-        if (!this.isGrounded && !this.isJumping)
-        {
-            this.anim.SetTrigger("isFalling");
-        }
-
-        if (this.isGrounded && (CrossPlatformInputManager.GetButtonDown("Jump") || Input.GetButtonDown("Jump")) && this.isAlive)
-        {
-            this.anim.SetTrigger("isJumping");
-            this.isJumping = true;
-        }
-
-        if (!this.IsAlive)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 

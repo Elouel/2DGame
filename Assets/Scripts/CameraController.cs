@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
         this.player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    public void FixedUpdate()
+    public void LateUpdate()
     {
         this.TrackPlayer();
     }

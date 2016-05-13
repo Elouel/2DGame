@@ -45,7 +45,7 @@ public class DoorOpenerScript : MonoBehaviour
         //    this.ChangeDirection(x, y);
         //    ((Camera) this.mainCamera).
         //}
-
+        Destroy(this.GetComponent<ParticleSystem>());
         Destroy(this.gameObject);
         Destroy(this.objectToDestroy.gameObject);
     }

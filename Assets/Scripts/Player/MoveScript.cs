@@ -19,6 +19,7 @@ public class MoveScript : MonoBehaviour
 
     private Rigidbody2D ps;
     private Animator anim;
+    private float movingPlatformHitAngle;
 
     public void Start()
     {
@@ -28,7 +29,7 @@ public class MoveScript : MonoBehaviour
 
     //public void FixedUpdate()
     //{
-        
+
 
 
     //    if (this.IsAlive && this.isJumping)
@@ -55,7 +56,7 @@ public class MoveScript : MonoBehaviour
             this.anim.SetTrigger("isJumping");
             this.isJumping = true;
         }
-        
+
         var move = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal"), 0f).x * this.moveSpeed * Time.deltaTime;
         this.transform.Translate(new Vector3(move, 0, 0));
 
@@ -96,5 +97,27 @@ public class MoveScript : MonoBehaviour
         {
             this.isAlive = value;
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.transform.tag == "MovingPlatform")
+        {
+            var hit = other.contacts[0].normal;
+            movingPlatformHitAngle = Vector2.Angle(hit, Vector2.up);
+
+            if (Mathf.Approximately(movingPlatformHitAngle, 0))
+            {
+                transform.parent = other.transform;
+            }
+        }
+    }
+    void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.transform.tag == "MovingPlatform")
+        {
+            transform.parent = null;
+        }
+
     }
 }

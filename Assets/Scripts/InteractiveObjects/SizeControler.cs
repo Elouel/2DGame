@@ -9,6 +9,11 @@ public class SizeControler : MonoBehaviour
     private float timeLeft;
     private bool isEffected;
 
+    void Start()
+    {
+        this.obj =(CircleCollider2D)GameObject.FindGameObjectWithTag("Player").GetComponent("CircleCollider2D");
+    }
+
     public void Update()
     {
         if (this.isEffected)

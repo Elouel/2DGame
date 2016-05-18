@@ -11,7 +11,6 @@ public class MovingPlatform : MonoBehaviour
     public bool loop = true;
 
     private Transform currentPoint;
-    private BackgroundParallax parallaxScript;
     private Transform cam;
     private Vector3 previousCamPos;
 
@@ -24,7 +23,6 @@ public class MovingPlatform : MonoBehaviour
     void Start()
     {
         currentPoint = points[pointSelection];
-        parallaxScript = (BackgroundParallax)FindObjectOfType(typeof(BackgroundParallax));
         previousCamPos = cam.position;
     }
 

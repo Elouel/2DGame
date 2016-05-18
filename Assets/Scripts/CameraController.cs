@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
 
     private Vector2 maxXAndY;        // The maximum x and y coordinates the camera can have.
     private Vector2 minXAndY;        // The minimum x and y coordinates the camera can have.
-    
+
 
 
     private Transform player;       // Reference to the player's transform.
@@ -21,12 +21,10 @@ public class CameraController : MonoBehaviour
         // Setting up the reference.
         this.player = GameObject.FindGameObjectWithTag("Player").transform;
         var cameraBounds = Camera.main.OrthographicBounds();
-        var camXOffset = (Mathf.Abs(cameraBounds.max.x) - Mathf.Abs(cameraBounds.min.x)) / 2;
-        var camYOffset = (Mathf.Abs(cameraBounds.max.y) - Mathf.Abs(cameraBounds.min.y)) / 2;
+        var camXOffset = (cameraBounds.max.x - cameraBounds.min.x) / 2;
+        var camYOffset = (cameraBounds.max.y - cameraBounds.min.y) / 2;
         maxXAndY = new Vector2(maxCameraXY.transform.position.x - camXOffset, maxCameraXY.transform.position.y - camYOffset);
-        Debug.Log(maxXAndY);
-        minXAndY = new Vector2(minCameraXY.transform.position.x - camXOffset, minCameraXY.transform.position.y - camYOffset);
-        Debug.Log(minXAndY);
+        minXAndY = new Vector2(minCameraXY.transform.position.x + camXOffset, minCameraXY.transform.position.y + camYOffset);
     }
 
     public void LateUpdate()

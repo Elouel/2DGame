@@ -6,8 +6,13 @@ public class CameraController : MonoBehaviour
     public float yMargin = 1f;      // Distance in the y axis the player can move before the camera follows.
     public float xSmooth = 2f;      // How smoothly the camera catches up with it's target movement in the x axis.
     public float ySmooth = 2f;      // How smoothly the camera catches up with it's target movement in the y axis.
-    public Vector2 maxXAndY;        // The maximum x and y coordinates the camera can have.
-    public Vector2 minXAndY;        // The minimum x and y coordinates the camera can have.
+    public GameObject maxCameraXY;
+    public GameObject minCameraXY;
+
+    private Vector2 maxXAndY;        // The maximum x and y coordinates the camera can have.
+    private Vector2 minXAndY;        // The minimum x and y coordinates the camera can have.
+
+
 
     private Transform player;       // Reference to the player's transform.
 
@@ -15,6 +20,11 @@ public class CameraController : MonoBehaviour
     {
         // Setting up the reference.
         this.player = GameObject.FindGameObjectWithTag("Player").transform;
+        var cameraBounds = Camera.main.OrthographicBounds();
+        var camXOffset = (cameraBounds.max.x - cameraBounds.min.x) / 2;
+        var camYOffset = (cameraBounds.max.y - cameraBounds.min.y) / 2;
+        maxXAndY = new Vector2(maxCameraXY.transform.position.x - camXOffset, maxCameraXY.transform.position.y - camYOffset);
+        minXAndY = new Vector2(minCameraXY.transform.position.x + camXOffset, minCameraXY.transform.position.y + camYOffset);
     }
 
     public void LateUpdate()

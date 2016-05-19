@@ -11,19 +11,15 @@ public class MovingPlatform : MonoBehaviour
     public bool loop = true;
 
     private Transform currentPoint;
-    private Transform cam;
-    private Vector3 previousCamPos;
 
     void Awake()
     {
-        cam = Camera.main.transform;
     }
 
     // Use this for initialization
     void Start()
     {
         currentPoint = points[pointSelection];
-        previousCamPos = cam.position;
     }
 
     // Update is called once per frame

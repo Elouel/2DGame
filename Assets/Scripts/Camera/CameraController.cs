@@ -8,9 +8,9 @@ public class CameraController : MonoBehaviour
     public float ySmooth = 2f;      // How smoothly the camera catches up with it's target movement in the y axis.
     public GameObject maxCameraXY;
     public GameObject minCameraXY;
+    public Vector2 maxXAndY;        // The maximum x and y coordinates the camera can have.
+    public Vector2 minXAndY;        // The minimum x and y coordinates the camera can have.
 
-    private Vector2 maxXAndY;        // The maximum x and y coordinates the camera can have.
-    private Vector2 minXAndY;        // The minimum x and y coordinates the camera can have.
 
 
 

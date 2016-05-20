@@ -16,7 +16,7 @@ public class TrailerCamera : MonoBehaviour
     public GameObject focusObject;
     private Vector3 startPosition;
     private bool isLerping;
-    public List<MonoBehaviour> scriptsToEnable;
+    public MonoBehaviour[] scriptsToEnable;
 
     protected void Start()
     {
@@ -64,14 +64,16 @@ public class TrailerCamera : MonoBehaviour
         if (perc >= 1)
         {
             isLerping = false;
-            foreach (var c in scriptsToEnable)
+            for (int i = 0; i < scriptsToEnable.Length; i++)
             {
-                c.enabled = true;
+                scriptsToEnable[i].enabled = true;
             }
+
             yield return new WaitForSeconds(secondsToFocus);
-            foreach (var c in scriptsToEnable)
+
+            for (int i = 0; i < scriptsToEnable.Length; i++)
             {
-                c.enabled = false;
+                scriptsToEnable[i].enabled = false;
             }
             camScript.enabled = true;
             finishedTrailer = true;
